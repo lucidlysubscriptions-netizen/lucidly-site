@@ -35,12 +35,14 @@ function FormField({ label, children }: FormFieldProps) {
 
 interface SelectProps {
   options: string[]
+  /** Form field name — required for the value to be included in form submissions. */
+  name?: string
 }
 
-function Select({ options }: SelectProps) {
+function Select({ options, name }: SelectProps) {
   return (
     <div style={{ position: 'relative' }}>
-      <select style={{ ...inputStyle, appearance: 'none', paddingRight: 32, cursor: 'pointer' }}>
+      <select name={name} style={{ ...inputStyle, appearance: 'none', paddingRight: 32, cursor: 'pointer' }}>
         {options.map((o) => (
           <option key={o} value={o} style={{ background: '#FFFFFF', color: 'var(--ink)' }}>
             {o}
@@ -67,14 +69,27 @@ function Select({ options }: SelectProps) {
   )
 }
 
+// Substack blocks direct subscribe API calls from third-party origins via
+// Cloudflare's bot challenge. So instead of POSTing here, we open the Substack
+// publication's subscribe page in a new tab with the email prefilled — the user
+// completes the subscribe over there, where Substack's own JS solves Cloudflare.
+const SUBSTACK_DOMAIN = 'lucidlylabs1'
+
 function NewsletterForm() {
   const [email, setEmail] = useState('')
   const [done, setDone] = useState(false)
+  const [sending] = useState(false)
+  const [err] = useState<string | null>(null)
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault()
-        if (email) setDone(true)
+        if (!email) return
+        const url =
+          `https://${SUBSTACK_DOMAIN}.substack.com/subscribe?email=` +
+          encodeURIComponent(email)
+        window.open(url, '_blank', 'noopener,noreferrer')
+        setDone(true)
       }}
       style={{
         display: 'flex',
@@ -88,7 +103,7 @@ function NewsletterForm() {
     >
       {done ? (
         <div style={{ flex: 1, padding: '8px 16px', fontSize: 13, color: 'var(--ink-2)' }}>
-          Subscribed. Next memo ships in 18 days.
+          Opened Substack in a new tab — finish subscribing there.
         </div>
       ) : (
         <>
@@ -98,6 +113,7 @@ function NewsletterForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="allocator@firm.com"
+            disabled={sending}
             style={{
               flex: 1,
               border: 0,
@@ -110,6 +126,7 @@ function NewsletterForm() {
           />
           <button
             type="submit"
+            disabled={sending}
             style={{
               height: 48,
               padding: '0 24px',
@@ -124,11 +141,14 @@ function NewsletterForm() {
               alignItems: 'center',
               justifyContent: 'center',
               gap: 6,
+              opacity: sending ? 0.7 : 1,
+              cursor: sending ? 'wait' : 'pointer',
               filter:
                 'drop-shadow(-4px -4px 4px #FFF) drop-shadow(4px 4px 8px rgba(127, 86, 217, 0.15))',
-              transition: 'transform .15s ease, filter .15s ease',
+              transition: 'transform .15s ease, filter .15s ease, opacity .15s ease',
             }}
             onMouseEnter={(e) => {
+              if (sending) return
               e.currentTarget.style.transform = 'translateY(-1px)'
               e.currentTarget.style.filter =
                 'drop-shadow(-4px -4px 4px #FFF) drop-shadow(6px 6px 12px rgba(127, 86, 217, 0.25))'
@@ -139,9 +159,22 @@ function NewsletterForm() {
                 'drop-shadow(-4px -4px 4px #FFF) drop-shadow(4px 4px 8px rgba(127, 86, 217, 0.15))'
             }}
           >
-            Subscribe <Icon.Arrow size={11} />
+            {sending ? 'Subscribing…' : 'Subscribe'} {!sending && <Icon.Arrow size={11} />}
           </button>
         </>
+      )}
+      {err && !done && (
+        <div
+          style={{
+            flexBasis: '100%',
+            padding: '6px 16px 0',
+            fontSize: 11,
+            color: 'var(--warn)',
+          }}
+          role="alert"
+        >
+          {err}
+        </div>
       )}
     </form>
   )
@@ -154,8 +187,13 @@ const REQUEST_STATS: Array<[string, string]> = [
 ]
 
 /* 12 - CTA / Allocator. Light theme. */
+const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
+const WEB3FORMS_ACCESS_KEY = '9a2f3eb2-e761-4290-9ae1-60c0e0d80916'
+
 export function AllocatorCTA() {
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   return (
     <section id="allocate" style={{ paddingTop: 'var(--section-y)', paddingBottom: 'var(--section-y)' }}>
       <div className="container">
@@ -234,9 +272,42 @@ export function AllocatorCTA() {
             </div>
 
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault()
-                setSubmitted(true)
+                if (submitting) return
+                setSubmitting(true)
+                setError(null)
+                const formEl = e.currentTarget
+                const data = Object.fromEntries(new FormData(formEl)) as Record<string, string>
+                try {
+                  const res = await fetch(FORM_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Accept: 'application/json',
+                    },
+                    body: JSON.stringify({
+                      access_key: WEB3FORMS_ACCESS_KEY,
+                      ...data,
+                      subject: `Lucidly allocator request — ${data.email ?? 'no email'}`,
+                      from_name: 'Lucidly Site',
+                      replyto: data.email,
+                    }),
+                  })
+                  const result = (await res.json().catch(() => null)) as
+                    | { success?: boolean; message?: string }
+                    | null
+                  if (!res.ok || !result?.success) {
+                    throw new Error(result?.message ?? `HTTP ${res.status}`)
+                  }
+                  setSubmitted(true)
+                } catch {
+                  setError(
+                    'Could not submit right now. Please try again or email yashish@lucidlylabs.xyz directly.',
+                  )
+                } finally {
+                  setSubmitting(false)
+                }
               }}
               style={{
                 borderRadius: 12,
@@ -269,19 +340,43 @@ export function AllocatorCTA() {
               ) : (
                 <>
                   <FormField label="Allocator type">
-                    <Select options={['Family office', 'Fund / FoF', 'Treasury / DAO', 'Other institutional']} />
+                    <Select
+                      name="allocator_type"
+                      options={['Family office', 'Fund / FoF', 'Treasury / DAO', 'Other institutional']}
+                    />
                   </FormField>
                   <FormField label="Ticket size">
-                    <Select options={['$500K – $2M', '$2M – $10M', '$10M – $50M', '$50M +']} />
+                    <Select name="ticket_size" options={['$500K – $2M', '$2M – $10M', '$10M – $50M', '$50M +']} />
                   </FormField>
                   <FormField label="Benchmark">
-                    <Select options={['USD', 'BTC', 'ETH', 'Custom']} />
+                    <Select name="benchmark" options={['USD', 'BTC', 'ETH', 'Custom']} />
                   </FormField>
                   <FormField label="Contact email">
-                    <input type="email" placeholder="allocator@firm.com" required style={inputStyle} />
+                    <input
+                      name="email"
+                      type="email"
+                      placeholder="allocator@firm.com"
+                      required
+                      style={inputStyle}
+                    />
                   </FormField>
+                  {error && (
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: 'var(--warn)',
+                        lineHeight: 1.5,
+                        textAlign: 'center',
+                        marginTop: -4,
+                      }}
+                      role="alert"
+                    >
+                      {error}
+                    </div>
+                  )}
                   <button
                     type="submit"
+                    disabled={submitting}
                     style={{
                       marginTop: 8,
                       height: 48,
@@ -296,11 +391,14 @@ export function AllocatorCTA() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: 8,
+                      opacity: submitting ? 0.7 : 1,
+                      cursor: submitting ? 'wait' : 'pointer',
                       filter:
                         'drop-shadow(-4px -4px 4px #FFF) drop-shadow(4px 4px 8px rgba(127, 86, 217, 0.15))',
-                      transition: 'transform .15s ease, filter .15s ease',
+                      transition: 'transform .15s ease, filter .15s ease, opacity .15s ease',
                     }}
                     onMouseEnter={(e) => {
+                      if (submitting) return
                       e.currentTarget.style.transform = 'translateY(-1px)'
                       e.currentTarget.style.filter =
                         'drop-shadow(-4px -4px 4px #FFF) drop-shadow(6px 6px 12px rgba(127, 86, 217, 0.25))'
@@ -311,7 +409,7 @@ export function AllocatorCTA() {
                         'drop-shadow(-4px -4px 4px #FFF) drop-shadow(4px 4px 8px rgba(127, 86, 217, 0.15))'
                     }}
                   >
-                    Request access <Icon.Arrow />
+                    {submitting ? 'Sending…' : 'Request access'} {!submitting && <Icon.Arrow />}
                   </button>
                 </>
               )}

@@ -178,7 +178,7 @@ export function Strategies() {
           ))}
           <Reveal delay={LUCIDLY_DATA.strategies.length * 70}>
             <a
-              href="#"
+              href="#allocate"
               style={{
                 display: 'flex',
                 flexDirection: 'column',

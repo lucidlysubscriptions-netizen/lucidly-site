@@ -47,7 +47,7 @@
 
   /* Spacing */
   --pad-x: clamp(20px, 4vw, 56px);
-  --section-y: clamp(72px, 9vw, 128px);
+  --section-y: clamp(36px, 4.5vw, 64px);
   --max-w: 1280px;
 }
 

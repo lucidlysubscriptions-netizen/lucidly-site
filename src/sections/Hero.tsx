@@ -45,14 +45,14 @@ export function Hero() {
   const { value: apy, status: apyStatus } = useSyUsdApy()
 
   return (
-    <section style={{ paddingTop: 'clamp(64px, 8vw, 112px)', paddingBottom: 'clamp(48px, 6vw, 96px)' }}>
+    <section style={{ paddingTop: 'clamp(32px, 4vw, 56px)', paddingBottom: 'clamp(24px, 3vw, 48px)' }}>
       <div className="container">
         <Reveal delay={100}>
           <h1 className="h-hero">
             <span className="hero-nowrap">Institutional execution for</span>
             <br />
             <WordRotate
-              words={['permissioned', 'agentic', 'risk-bounded', 'structured']}
+              words={['tokenized', 'permissioned', 'agentic', 'risk-bounded', 'structured']}
             />{' '}
             onchain strategies.
           </h1>

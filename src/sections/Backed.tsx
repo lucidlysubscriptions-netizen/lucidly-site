@@ -10,9 +10,6 @@ interface Backer {
 
 const BACKERS: Backer[] = [
   { name: 'Skycatcher', mark: 'SC', logo: '/logos/skycatcher.svg' },
-  { name: 'Placeholder Cap', mark: 'PC' },
-  { name: 'Onchain Ventures', mark: 'OV' },
-  { name: 'Reserve Labs', mark: 'RL' },
 ]
 
 /* 10 - Backed by */
@@ -51,9 +48,11 @@ export function Backed() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
+              gridTemplateColumns: `repeat(${BACKERS.length}, 1fr)`,
               gap: 0,
               overflow: 'hidden',
+              boxShadow:
+                '-4px -4px 8px 0 #FFF inset, 4px 4px 8px 0 rgba(0, 0, 0, 0.08) inset, -4px -4px 12px 0 #FFF, 4px 4px 12px 0 rgba(0, 0, 0, 0.10)',
             }}
             className="backers-grid card-neu"
           >
@@ -64,8 +63,9 @@ export function Backed() {
                   padding: '28px 24px',
                   display: 'flex',
                   alignItems: 'center',
+                  justifyContent: 'center',
                   gap: 14,
-                  borderRight: i < 3 ? '1px solid var(--line)' : 'none',
+                  borderRight: i < BACKERS.length - 1 ? '1px solid var(--line)' : 'none',
                   color: 'var(--ink-2)',
                 }}
               >
@@ -110,10 +110,6 @@ export function Backed() {
         <style>{`
           @media (max-width: 880px) {
             .backed-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
-            .backers-grid { grid-template-columns: repeat(2, 1fr) !important; }
-            .backers-grid > div:nth-child(1), .backers-grid > div:nth-child(3) { border-right: 1px solid var(--line) !important; }
-            .backers-grid > div:nth-child(2) { border-right: none !important; }
-            .backers-grid > div:nth-child(1), .backers-grid > div:nth-child(2) { border-bottom: 1px solid var(--line); }
           }
         `}</style>
       </div>
