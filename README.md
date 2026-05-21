@@ -34,16 +34,18 @@ src/
   main.tsx              app entry
   App.tsx               section composition
   styles.css            design tokens + global styles
-  data.ts               site content (typed)
+  data.tsx              site content (typed; .tsx so FAQ answers can embed JSX)
   types.ts              shared content types
+  config.ts             feature flags
   components/
     icons.tsx           inline SVG icon set
     Brand.tsx           logo mark + wordmark
+    HeroSketch.tsx      decorative engraved tradfi backdrop for the hero
+    WordRotate.tsx      animated word swap in the headline
     primitives.tsx      Counter, Reveal, SectionHeader, Spark, etc.
+  hooks/
+    useLiveTvl.ts       fetches the latest daily TVL (rendered as "AUM")
+    useSyUsdApy.ts      fetches syUSD vault APY since inception
+    useVaultApys.ts     fetches per-vault APYs for strategy cards
   sections/             one file per page section
 ```
-
-## Legacy
-
-The original in-browser-Babel prototype lives in `legacy/` (not built or
-deployed). It is kept for reference only.

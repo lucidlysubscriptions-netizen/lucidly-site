@@ -6,56 +6,65 @@ export const LUCIDLY_DATA: LucidlyData = {
     { id: 'strategies', value: 4, suffix: '', label: 'live strategies' },
     { id: 'chains', value: 7, suffix: '', label: 'chains in production' },
     { id: 'apr', value: 9.8, suffix: '%', label: 'syUSD net APR since inception' },
-    { id: 'tvl', value: 41.2, prefix: '$', suffix: 'M', label: 'live TVL' },
+    { id: 'tvl', value: 41.2, prefix: '$', suffix: 'M', label: 'live AUM' },
   ],
 
   strategies: [
     {
       token: 'syUSD',
       benchmark: 'USD',
-      summary: 'Leveraged siUSD/USDC loop on Morpho.',
-      chain: 'Ethereum',
+      summary:
+        'The institutional dollar account, onchain. Engineered USD yield from a hedged lending spread.',
+      chain: 'Base',
       liveSince: 'Sep 2025',
       apr: '9.8%',
       status: 'live',
       tags: ['Leveraged loop', 'Lending'],
+      href: 'https://app.lucidly.finance/yields?vaultAddress=0x279CAD277447965AF3d24a78197aad1B02a2c589',
+      apy: { vaultAddress: '0x279CAD277447965AF3d24a78197aad1B02a2c589', duration: 'inception' },
     },
     {
       token: 'cyBTC',
       benchmark: 'BTC',
-      summary: 'WBTC/WETH concentrated-liquidity LP with Aave-hedged ETH delta.',
-      chain: 'Arbitrum',
-      liveSince: 'Oct 2025',
+      summary: 'Bitcoin that earns. Basis income in BTC terms, price exposure left untouched.',
+      chain: 'Ethereum',
+      liveSince: 'May 2026',
       apr: '7.4%',
       status: 'live',
-      tags: ['Hedged CLMM', 'LP'],
+      tags: ['Basis', 'Carry'],
+      href: 'https://app.lucidly.finance/yields?vaultAddress=0x272BCD869CbDFcb32c335dB2f1F6C54Eb1A50aCc',
+      apy: { vaultAddress: '0x272BCD869CbDFcb32c335dB2f1F6C54Eb1A50aCc', duration: '30d' },
     },
     {
       token: 'cyETH',
       benchmark: 'ETH',
-      summary: 'Hedged ETH carry - basis and lending spread capture.',
+      summary: 'Your ETH stack, now a carry book - yield without giving up the upside.',
       chain: 'Ethereum',
-      liveSince: 'Nov 2025',
+      liveSince: 'May 2026',
       apr: '6.1%',
       status: 'live',
       tags: ['Basis', 'Carry'],
+      href: 'https://app.lucidly.finance/yields?vaultAddress=0x5373690c930553648f0aaA2e53B51f0C59290B7d',
+      apy: { vaultAddress: '0x5373690c930553648f0aaA2e53B51f0C59290B7d', duration: '30d' },
     },
     {
-      token: 'jrRoyUSDC',
+      token: 'jrRoycoUSDC',
       benchmark: 'USD',
       summary:
-        'Junior tranche on Royco USDC incentive markets - yield enhancement via subordinated risk.',
-      chain: 'Base',
-      liveSince: 'Feb 2026',
+        'The high-octane USDC sleeve - junior, first-loss capital into Royco Dawn markets for the richest stablecoin yield on the stack.',
+      chain: 'Ethereum',
+      liveSince: 'May 2026',
       apr: '12.4%',
       status: 'live',
       tags: ['Tranched', 'Incentives'],
+      href: 'https://app.lucidly.finance/yields?vaultAddress=0x71861827Aa95cA48148bdA0b40BC740d1c421070',
+      apy: { vaultAddress: '0x71861827Aa95cA48148bdA0b40BC740d1c421070', duration: '30d' },
     },
     {
       token: 'dnCluster',
       benchmark: 'USD',
       summary:
-        'Delta-neutral funding capture across BTC, ETH, SOL, HYPE - spot-long / perp-short, hysteresis-gated rotation.',
+        'Pure funding yield. Market-neutral by construction, eight assets, one auto-rotating book.',
       chain: 'Hyperliquid',
       liveSince: 'TBA',
       apr: 'TBA',
@@ -63,14 +72,15 @@ export const LUCIDLY_DATA: LucidlyData = {
       tags: ['Delta-neutral', 'Funding'],
     },
     {
-      token: 'Aero FX MM',
-      benchmark: 'USD',
-      summary: 'EURC/USDC concentrated-liquidity LP - FX-stable market making.',
-      chain: 'Aerodrome',
+      token: 'LP and Hedge',
+      benchmark: 'BTC',
+      summary:
+        'Market-making income, Bitcoin-benchmarked, fees from the range, ETH risk hedged out.',
+      chain: 'Arbitrum',
       liveSince: 'TBA',
       apr: 'TBA',
       status: 'building',
-      tags: ['FX', 'CLMM'],
+      tags: ['Hedged CLMM', 'LP'],
     },
   ],
 
@@ -79,15 +89,15 @@ export const LUCIDLY_DATA: LucidlyData = {
   whyPillars: [
     {
       title: 'We operate, not curate.',
-      body: 'Curators allocate to other people’s strategies. Lucidly builds them. The return source, the hedge, the execution policy - all owned. Every basis point we report is one we earned, not one we routed.',
+      body: 'Curators allocate capital to other underlying products. Lucidly builds them. The return source, the hedge, the execution policy - all owned. Every basis point we report is one we earned, not one we routed.',
     },
     {
       title: 'Cryptographic safety surface.',
-      body: 'The strategist’s universe of permitted actions is fixed in a merkle leaf set published per strategy. There is no admin key escape hatch into operations the leaves don’t cover.',
+      body: 'The strategist’s universe of permitted actions is fixed in a merkle policy set published per strategy. There is no admin key escape hatch into operations the policies don’t cover.',
     },
     {
       title: 'Engineered, not aggregated.',
-      body: 'Each syToken is a structured product - LP leg plus hedge leg plus execution policy, designed together to produce a defined return profile. Documented max-loss functions. Live drawdown reporting.',
+      body: 'Each strategy is a structured product - LP leg plus hedge leg plus execution policy, designed together to produce a defined return profile. Documented max-loss functions. Live drawdown reporting.',
     },
     {
       title: 'Multi-chain by default.',
@@ -97,7 +107,7 @@ export const LUCIDLY_DATA: LucidlyData = {
 
   transparency: [
     {
-      title: 'Live NAV per syToken',
+      title: 'Live NAV per strategy',
       detail: 'Net-asset-value computed from live position state. Updated every block.',
       sample: 'syUSD · $1.0742 · +0.0008 / 24h',
     },
@@ -105,11 +115,6 @@ export const LUCIDLY_DATA: LucidlyData = {
       title: 'Strategy state dashboards',
       detail: 'Current LTV, hedge drift, LP range, funding accrual, idle reserves.',
       sample: 'LTV 67.4% · drift 0.31%',
-    },
-    {
-      title: 'Merkle leaf sets',
-      detail: 'Every authorized action for every strategy, published and addressable on-chain.',
-      sample: '0x4f9a…2e1c · 184 leaves',
     },
     {
       title: 'Transaction log',
@@ -121,11 +126,11 @@ export const LUCIDLY_DATA: LucidlyData = {
   audiences: [
     {
       title: 'Family offices & treasuries',
-      body: 'USD, BTC, and ETH-benchmark exposures with defined drawdown profiles. Per-syToken factsheets, monthly performance memos, dedicated allocator channel.',
+      body: 'USD, BTC, and ETH-benchmark exposures with defined drawdown profiles. Per-strategy factsheets, monthly performance memos, dedicated allocator channel.',
     },
     {
       title: 'Funds & funds-of-funds',
-      body: 'A diversified set of low-correlation strategies under one operator. Customizable allocation between syTokens; sub-account view; reporting in your benchmark of choice.',
+      body: 'A diversified set of low-correlation strategies under one operator. Customizable allocation between strategies; sub-account view; reporting in your benchmark of choice.',
     },
     {
       title: 'DAOs & protocol treasuries',
@@ -136,7 +141,7 @@ export const LUCIDLY_DATA: LucidlyData = {
   risk: [
     {
       title: 'Cryptographic bounds.',
-      body: 'Every strategist action must match a pre-authorized merkle leaf. The strategist cannot operate outside the documented surface - not because we ask them not to, but because the contract reverts. Every leaf set is published per strategy.',
+      body: 'Every strategist action must match a pre-authorized merkle policy. The strategist cannot operate outside the documented surface - not because we ask them not to, but because the contract reverts. Every policy set is published per strategy.',
     },
     {
       title: 'Per-strategy guardrails.',
@@ -210,23 +215,37 @@ export const LUCIDLY_DATA: LucidlyData = {
   faq: [
     {
       q: 'How is Lucidly different from a yield aggregator?',
-      a: 'Aggregators route capital between existing pools. Lucidly builds the strategies. Each syToken is a proprietary structured product with its own hedge, its own execution policy, and its own risk framework.',
+      a: 'Aggregators route capital between existing pools. Lucidly builds the strategies. Each strategy is a proprietary structured product with its own hedge, its own execution policy, and its own risk framework.',
     },
     {
-      q: 'How is Lucidly different from a curator like Gauntlet or Allez?',
-      a: 'Curators allocate capital to other people’s strategies. Lucidly builds and operates the strategies and the execution stack underneath them.',
+      q: 'How is Lucidly different from a DeFi risk curator?',
+      a: 'Curators allocate capital to other underlying products. Lucidly builds and operates the strategies and the execution stack underneath them.',
     },
     {
       q: 'What stops the strategist from doing something stupid or malicious?',
-      a: 'The vault’s Manager contract verifies every transaction against a Merkle-proven leaf set. Anything that isn’t pre-authorized in the leaves reverts. The strategist cannot operate outside that surface.',
+      a: 'The vault’s Manager contract verifies every transaction against a Merkle-proven policy set. Anything that isn’t pre-authorized in the policies reverts. The strategist cannot operate outside that surface.',
     },
     {
       q: 'Where can I see live performance?',
-      a: 'Live NAV, TVL, and per-strategy state are on the allocator dashboard. Net APR per syToken is computed from live position state every block.',
+      a: 'Live NAV, AUM, and per-strategy state are on the allocator dashboard. Net APR per strategy is computed from live position state every block.',
     },
     {
       q: 'How do I allocate?',
-      a: 'Request access via the allocator memo. We onboard institutional allocators directly; minimum varies by strategy.',
+      a: (
+        <>
+          Access our strategies on{' '}
+          <a
+            href="https://app.lucidly.finance/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'var(--accent-ink)', borderBottom: '1px solid var(--line-2)' }}
+          >
+            app.lucidly.finance
+          </a>
+          . For custom strategies, Request access via the allocator memo. We onboard institutional
+          allocators directly; minimum varies by strategy.
+        </>
+      ),
     },
   ],
 
@@ -234,9 +253,9 @@ export const LUCIDLY_DATA: LucidlyData = {
 
   navLinks: [
     { label: 'Strategies', href: '#strategies' },
-    { label: 'Execution Engine', href: '#engine' },
-    { label: 'Research', href: '#research' },
-    { label: 'Docs', href: '#' },
-    { label: 'Allocators', href: '#allocate' },
+    { label: 'Execution', href: '#engine' },
+    { label: 'Research', href: 'https://research.lucidly.finance/', external: true },
+    { label: 'Docs', href: 'https://docs.lucidly.finance/', external: true },
+    { label: 'Blogs', href: 'https://www.lucidly.finance/blog', external: true },
   ],
 }

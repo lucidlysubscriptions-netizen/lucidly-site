@@ -19,6 +19,11 @@ export interface Strategy {
   apr: string
   status: StrategyStatus
   tags: string[]
+  /** Optional per-strategy app URL. Falls back to the generic app entry. */
+  href?: string
+  /** Optional live APY lookup config. If present, `apr` is replaced with
+   *  the live value from the Lucidly API (or "__" when negative/loading). */
+  apy?: { vaultAddress: string; duration: 'inception' | '30d' | string }
 }
 
 export interface Pillar {
@@ -41,14 +46,18 @@ export interface ResearchItem {
   href?: string
 }
 
+import type { ReactNode } from 'react'
+
 export interface FaqItem {
   q: string
-  a: string
+  a: ReactNode
 }
 
 export interface NavLink {
   label: string
   href: string
+  /** When true, render with target=_blank + rel=noopener noreferrer. */
+  external?: boolean
 }
 
 export interface LucidlyData {

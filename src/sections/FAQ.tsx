@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon } from '../components/icons'
 import { SectionHeader } from '../components/primitives'
 import { LUCIDLY_DATA } from '../data'
 
 interface FAQRowProps {
   q: string
-  a: string
+  a: ReactNode
   open: boolean
   onClick: () => void
   idx: number
@@ -90,13 +90,7 @@ export function FAQ() {
   return (
     <section style={{ paddingTop: 'var(--section-y)', paddingBottom: 'var(--section-y)' }}>
       <div className="container">
-        <SectionHeader
-          num="11"
-          label="FAQ"
-          kicker="Five questions"
-          title="The ones allocators actually ask."
-          bordered={false}
-        />
+        <SectionHeader num="11" label="FAQ" kicker="FAQs" bordered={false} />
 
         <div style={{ marginTop: 40, display: 'grid', gridTemplateColumns: '1fr', gap: 0 }}>
           {LUCIDLY_DATA.faq.map((f, i) => (

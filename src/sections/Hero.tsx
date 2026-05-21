@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Counter, Reveal } from '../components/primitives'
 import { Icon } from '../components/icons'
 import { WordRotate } from '../components/WordRotate'
+import { HeroSketch } from '../components/HeroSketch'
 import { useLiveTvl } from '../hooks/useLiveTvl'
 import { useSyUsdApy } from '../hooks/useSyUsdApy'
 
@@ -45,24 +46,27 @@ export function Hero() {
   const { value: apy, status: apyStatus } = useSyUsdApy()
 
   return (
-    <section style={{ paddingTop: 'clamp(32px, 4vw, 56px)', paddingBottom: 'clamp(24px, 3vw, 48px)' }}>
-      <div className="container">
+    <section
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        paddingTop: 'clamp(32px, 4vw, 56px)',
+        paddingBottom: 'clamp(36px, 4vw, 64px)',
+      }}
+    >
+      <HeroSketch />
+      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <Reveal delay={100}>
-          <h1 className="h-hero">
-            <span className="hero-nowrap">Institutional execution for</span>
+          <h1 className="h-hero" style={{ margin: 0 }}>
+            Institutional
             <br />
-            <WordRotate
-              words={['tokenized', 'permissioned', 'agentic', 'risk-bounded', 'structured']}
-            />{' '}
-            onchain strategies.
+            execution for
+            <br />
+            <WordRotate words={['tokenized', 'structured', 'automated']} />{' '}
+            onchain
+            <br />
+            strategies.
           </h1>
-        </Reveal>
-
-        <Reveal delay={250}>
-          <p className="body-lg" style={{ maxWidth: 720, marginTop: 28 }}>
-            Engineered structured products - hedged, automated, and run 24/7 on a merkle-permissioned vault
-            stack. Four strategies live across seven chains.
-          </p>
         </Reveal>
 
         <Reveal delay={400}>
@@ -70,7 +74,7 @@ export function Hero() {
             style={{
               marginTop: 56,
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
+              gridTemplateColumns: 'repeat(3, 1fr)',
               gap: 0,
               overflow: 'hidden',
             }}
@@ -78,22 +82,17 @@ export function Hero() {
           >
             <Metric value={<Counter to={4} duration={1200} />} label="live strategies" sub="across 7 chains" />
             <Metric
-              value={<Counter to={7} duration={1200} />}
-              label="chains in production"
-              sub="ETH · ARB · Base · Hype · Plasma · Monad · Katana"
-            />
-            <Metric
               value={
                 apyStatus === 'ready' && apy != null ? (
                   <>
                     <Counter to={apy} decimals={2} duration={1500} />%
                   </>
                 ) : (
-                  <span style={{ color: 'var(--ink-4)' }}>—</span>
+                  <span style={{ color: 'var(--ink-4)' }}>-</span>
                 )
               }
-              label="syUSD net APR"
-              sub="since inception · syUSD vault"
+              label="syUSD net APY"
+              sub="APY since inception"
             />
             <Metric
               value={
@@ -103,16 +102,13 @@ export function Hero() {
                     {tvlSuffix}
                   </>
                 ) : (
-                  <span style={{ color: 'var(--ink-4)' }}>—</span>
+                  <span style={{ color: 'var(--ink-4)' }}>-</span>
                 )
               }
-              label="live TVL"
+              label="live AUM"
               sub="updated every block"
             />
           </div>
-          <p className="caption" style={{ marginTop: 14, maxWidth: 720 }}>
-            syUSD live since September 2025. Live TVL and per-strategy performance updates every block.
-          </p>
         </Reveal>
 
         <Reveal delay={550}>

@@ -9,3 +9,6 @@ legacy
 uploads
 *.tsbuildinfo
 nav-shot.png
+
+# Claude Code dev configs (preview/launch settings, local agent state)
+.claude/

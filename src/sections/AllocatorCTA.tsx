@@ -35,7 +35,7 @@ function FormField({ label, children }: FormFieldProps) {
 
 interface SelectProps {
   options: string[]
-  /** Form field name — required for the value to be included in form submissions. */
+  /** Form field name - required for the value to be included in form submissions. */
   name?: string
 }
 
@@ -71,7 +71,7 @@ function Select({ options, name }: SelectProps) {
 
 // Substack blocks direct subscribe API calls from third-party origins via
 // Cloudflare's bot challenge. So instead of POSTing here, we open the Substack
-// publication's subscribe page in a new tab with the email prefilled — the user
+// publication's subscribe page in a new tab with the email prefilled - the user
 // completes the subscribe over there, where Substack's own JS solves Cloudflare.
 const SUBSTACK_DOMAIN = 'lucidlylabs1'
 
@@ -103,7 +103,7 @@ function NewsletterForm() {
     >
       {done ? (
         <div style={{ flex: 1, padding: '8px 16px', fontSize: 13, color: 'var(--ink-2)' }}>
-          Opened Substack in a new tab — finish subscribing there.
+          Opened Substack in a new tab - finish subscribing there.
         </div>
       ) : (
         <>
@@ -181,9 +181,9 @@ function NewsletterForm() {
 }
 
 const REQUEST_STATS: Array<[string, string]> = [
-  ['Response', 'within 48h'],
+  ['Response', 'within 24h'],
   ['Onboarding', 'institutional'],
-  ['Minimum', 'varies by syToken'],
+  ['Minimum', 'varies by strategy'],
 ]
 
 /* 12 - CTA / Allocator. Light theme. */
@@ -242,15 +242,23 @@ export function AllocatorCTA() {
                 }}
               >
                 <span style={{ width: 6, height: 6, background: 'var(--accent)', borderRadius: '50%' }} />
-                Allocator access · gated
+                Allocator access
               </div>
               <h2 className="h-section" style={{ textWrap: 'balance' }}>
                 Request the allocator memo.
               </h2>
               <p style={{ fontSize: 17, lineHeight: 1.55, color: 'var(--ink-3)', marginTop: 20, maxWidth: 480 }}>
-                Per-strategy factsheets, live NAV, drawdown scenarios, and an intro call with the desk.
+                Per-strategy factsheets, live NAV, drawdown scenarios, and an intro call with the team.
               </p>
-              <div style={{ marginTop: 36, display: 'grid', gridTemplateColumns: 'repeat(3, max-content)', gap: 36 }}>
+              <div
+                style={{
+                  marginTop: 36,
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  columnGap: 36,
+                  rowGap: 20,
+                }}
+              >
                 {REQUEST_STATS.map(([k, v]) => (
                   <div key={k}>
                     <div
@@ -289,7 +297,7 @@ export function AllocatorCTA() {
                     body: JSON.stringify({
                       access_key: WEB3FORMS_ACCESS_KEY,
                       ...data,
-                      subject: `Lucidly allocator request — ${data.email ?? 'no email'}`,
+                      subject: `Lucidly allocator request - ${data.email ?? 'no email'}`,
                       from_name: 'Lucidly Site',
                       replyto: data.email,
                     }),
@@ -334,7 +342,7 @@ export function AllocatorCTA() {
                     Request received.
                   </div>
                   <div style={{ fontSize: 13, color: 'var(--ink-3)' }}>
-                    The desk will be in touch within 48 hours.
+                    The team will be in touch within 24 hours.
                   </div>
                 </div>
               ) : (
@@ -446,7 +454,7 @@ export function AllocatorCTA() {
               Per-strategy performance, every month.
             </h3>
             <p style={{ fontSize: 14, color: 'var(--ink-3)', margin: '8px 0 0', maxWidth: 480 }}>
-              No marketing. Net returns, drawdown attribution, and what the desk did.
+              No marketing. Net returns, drawdown attribution, and what the team did.
             </p>
           </div>
           <NewsletterForm />

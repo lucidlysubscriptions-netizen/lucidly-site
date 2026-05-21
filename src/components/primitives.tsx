@@ -104,8 +104,8 @@ export function Reveal({ children, delay = 0, as = 'div', style }: RevealProps) 
 interface SectionHeaderProps {
   num: string
   label: string
-  title: string
-  kicker?: string
+  title?: string
+  kicker?: ReactNode
   action?: ReactNode
   /** Set false to drop the hairline below the header. Defaults to true. */
   bordered?: boolean
@@ -143,7 +143,7 @@ export function SectionHeader({ num, label, title, kicker, action, bordered = tr
               {kicker}
             </div>
           )}
-          <h2 className="h-section">{title}</h2>
+          {title && <h2 className="h-section">{title}</h2>}
         </div>
         {action}
       </div>
@@ -217,7 +217,7 @@ export function StatusPill({ status }: StatusPillProps) {
     return (
       <span className="pill pill-building">
         <Icon.Dot color="var(--accent-ink)" />
-        Building
+        Beta Access
       </span>
     )
   }

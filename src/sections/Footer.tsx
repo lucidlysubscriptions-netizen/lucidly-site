@@ -1,48 +1,7 @@
 import type { ReactNode } from 'react'
 import { LucidlyLogo } from '../components/Brand'
 import { LiveClock } from '../components/primitives'
-
-interface FooterColProps {
-  title: string
-  links: string[]
-}
-
-function FooterCol({ title, links }: FooterColProps) {
-  return (
-    <div>
-      <div
-        className="mono"
-        style={{
-          fontSize: 10,
-          color: 'var(--ink-4)',
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          marginBottom: 16,
-        }}
-      >
-        {title}
-      </div>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {links.map((l) => (
-          <li key={l}>
-            <a
-              href="#"
-              style={{ fontSize: 13, color: 'var(--ink-3)', transition: 'color .15s ease' }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'var(--ink)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'var(--ink-3)'
-              }}
-            >
-              {l}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
+import { Icon } from '../components/icons'
 
 /* ---------- Social icons (current brand marks, monochrome, inherit currentColor) ---------- */
 
@@ -85,37 +44,70 @@ const SOCIALS: Array<{ label: string; href: string; icon: ReactNode }> = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/company/lucidlylabs/', icon: <LinkedInIcon /> },
 ]
 
-/* Footer — light theme */
+const CONTACT_URL = 'https://cal.com/lucidlyfi/30min'
+
+/* Footer - dark, minimal: brand + contact + socials + legal strip. */
 export function Footer() {
   return (
     <footer
       style={{
         background: 'var(--bg)',
         color: 'var(--ink-3)',
-        paddingTop: 80,
-        paddingBottom: 32,
-        marginTop: 80,
+        paddingTop: 40,
+        paddingBottom: 20,
         borderTop: '1px solid var(--line)',
       }}
     >
       <div className="container">
         <div
+          className="footer-top"
           style={{
-            display: 'grid',
-            gridTemplateColumns: '1.5fr repeat(4, 1fr)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
             gap: 32,
-            paddingBottom: 56,
+            paddingBottom: 24,
             borderBottom: '1px solid var(--line)',
           }}
-          className="footer-grid"
         >
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <LucidlyLogo width={100} />
-            <p style={{ fontSize: 13, color: 'var(--ink-4)', lineHeight: 1.6, maxWidth: 320, marginTop: 16 }}>
+            <p style={{ fontSize: 13, color: 'var(--ink-4)', lineHeight: 1.6, maxWidth: 420, margin: 0 }}>
               Institutional execution for tokenized onchain strategies. Engineered structured products on a
-              merkle-permissioned vault stack.
+              permissioned vault stack.
             </p>
-            <div style={{ display: 'flex', gap: 8, marginTop: 20 }}>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
+            <a
+              href={CONTACT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                height: 40,
+                padding: '0 18px',
+                borderRadius: 999,
+                background: 'var(--accent)',
+                color: '#fff',
+                fontSize: 13,
+                fontWeight: 600,
+                letterSpacing: '-0.01em',
+                transition: 'background .15s ease, transform .15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#6249E4'
+                e.currentTarget.style.transform = 'translateY(-1px)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'var(--accent)'
+                e.currentTarget.style.transform = 'none'
+              }}
+            >
+              Contact us <Icon.Arrow size={12} />
+            </a>
+            <div style={{ display: 'flex', gap: 8 }}>
               {SOCIALS.map((s) => (
                 <a
                   key={s.label}
@@ -130,16 +122,6 @@ export function Footer() {
               ))}
             </div>
           </div>
-          <FooterCol title="Product" links={['Strategies', 'syUSD', 'cyBTC', 'cyETH', 'Allocator dashboard']} />
-          <FooterCol
-            title="Stack"
-            links={['Execution engine', 'Vault layer', 'Merkle leaves', 'Agent loops', 'Architecture']}
-          />
-          <FooterCol title="Company" links={['Research', 'Brand', 'Careers', 'Contact', 'Legal']} />
-          <FooterCol
-            title="Allocators"
-            links={['Request memo', 'Factsheets', 'Risk framework', 'Monthly memo', 'Status']}
-          />
         </div>
 
         <div
@@ -154,14 +136,21 @@ export function Footer() {
         >
           <div style={{ display: 'flex', gap: 18, fontSize: 12, color: 'var(--ink-4)' }}>
             <span>© Lucidly Labs Limited, 2026.</span>
-            <a href="#" style={{ borderBottom: '1px solid var(--line-2)', color: 'var(--ink-3)' }}>
+            <a
+              href="https://docs.lucidly.finance/legal"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ borderBottom: '1px solid var(--line-2)', color: 'var(--ink-3)' }}
+            >
               Privacy
             </a>
-            <a href="#" style={{ borderBottom: '1px solid var(--line-2)', color: 'var(--ink-3)' }}>
+            <a
+              href="https://docs.lucidly.finance/legal"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ borderBottom: '1px solid var(--line-2)', color: 'var(--ink-3)' }}
+            >
               Terms
-            </a>
-            <a href="#" style={{ borderBottom: '1px solid var(--line-2)', color: 'var(--ink-3)' }}>
-              Disclosures
             </a>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -190,8 +179,15 @@ export function Footer() {
           background: var(--bg-elev);
           transform: translateY(-1px);
         }
-        @media (max-width: 880px) {
-          .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 40px !important; }
+        @media (max-width: 720px) {
+          .footer-top {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 24px !important;
+          }
+          .footer-top > div:last-child {
+            align-items: flex-start !important;
+          }
         }
       `}</style>
     </footer>

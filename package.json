@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Lucidly — institutional execution for tokenized onchain strategies. Landing site.",
+  "description": "Lucidly - institutional execution for tokenized onchain strategies. Landing site.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -19,7 +19,6 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "playwright": "^1.60.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.5"
   }

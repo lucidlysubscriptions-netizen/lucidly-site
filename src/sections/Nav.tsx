@@ -1,15 +1,28 @@
+import { useEffect, useState } from 'react'
 import { LucidlyLogo } from '../components/Brand'
 import { LUCIDLY_DATA } from '../data'
 
 /* Sticky top navigation */
 export function Nav() {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <header
       style={{
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        background: 'var(--bg)',
+        background: scrolled ? 'rgba(244, 240, 255, 0.85)' : 'transparent',
+        backdropFilter: scrolled ? 'saturate(180%) blur(14px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'saturate(180%) blur(14px)' : 'none',
+        borderBottom: scrolled ? '1px solid var(--line)' : '1px solid transparent',
+        transition: 'background .2s ease, border-color .2s ease',
       }}
     >
       <div
@@ -46,6 +59,8 @@ export function Nav() {
               <a
                 key={l.label}
                 href={l.href}
+                target={l.external ? '_blank' : undefined}
+                rel={l.external ? 'noopener noreferrer' : undefined}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

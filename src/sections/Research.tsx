@@ -18,7 +18,7 @@ export function Research() {
         <SectionHeader
           num="09"
           label="Research"
-          kicker="From the desk"
+          kicker="From the team"
           title="Memos, strategy notes, partner drops."
           action={
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -45,7 +45,7 @@ export function Research() {
                 </svg>
               </button>
               <a
-                href="https://www.lucidly.finance/blog"
+                href="https://research.lucidly.finance/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-link"

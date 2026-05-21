@@ -1,4 +1,3 @@
-import { Icon } from '../components/icons'
 import { SectionHeader } from '../components/primitives'
 import { LUCIDLY_DATA } from '../data'
 
@@ -20,11 +19,6 @@ export function Risk() {
           label="Risk framework"
           kicker="Own this - most competitors hide it"
           title="How we think about risk."
-          action={
-            <a href="#" className="text-link">
-              Full risk framework <Icon.ArrowUpRight />
-            </a>
-          }
         />
 
         <div

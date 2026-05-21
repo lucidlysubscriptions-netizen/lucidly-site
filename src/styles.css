@@ -46,7 +46,7 @@
   --r-pill: 999px;
 
   /* Spacing */
-  --pad-x: clamp(20px, 4vw, 56px);
+  --pad-x: clamp(24px, 5vw, 80px);
   --section-y: clamp(36px, 4.5vw, 64px);
   --max-w: 1280px;
 }
@@ -292,7 +292,7 @@ section { position: relative; }
 .reveal.in { opacity: 1; transform: none; }
 
 /* ============================================================
-   WordRotate — Magic UI–style slot-machine slide swap inside the hero
+   WordRotate - Magic UI–style slot-machine slide swap inside the hero
    headline. Each word slides down from above and exits down out the
    bottom, clipped by the viewport so the motion reads as a slot reel.
    Container width transitions to the active word's measured width so
@@ -306,10 +306,9 @@ section { position: relative; }
   color: var(--accent);
   transition: width 300ms cubic-bezier(.45, .05, .2, 1);
   line-height: inherit;
-  /* Clip the slide motion to the box without using `overflow: hidden`,
-     which would change the inline-block's baseline to its bottom edge
-     and drop the word below the surrounding text's baseline. */
-  clip-path: inset(0);
+  /* Width is pinned to the widest word so trailing text never reflows when
+     the active word changes. Shorter words sit flush left inside the box. */
+  text-align: left;
 }
 
 .word-rotate__measure {
@@ -336,7 +335,7 @@ section { position: relative; }
 }
 
 /* Hero: keep "Institutional execution for" together on one line ONLY where the
-   viewport is wide enough to hold it at hero font size — otherwise it overflows
+   viewport is wide enough to hold it at hero font size - otherwise it overflows
    the right edge and forces the whole page to horizontal-scroll. */
 .hero-nowrap { white-space: normal; }
 @media (min-width: 760px) {
@@ -344,7 +343,7 @@ section { position: relative; }
 }
 
 /* ============================================================
-   Neumorphic card — applied to all light-themed cards on the lavender background.
+   Neumorphic card - applied to all light-themed cards on the lavender background.
    ============================================================ */
 .card-neu {
   border-radius: 24px;
@@ -355,4 +354,146 @@ section { position: relative; }
     -4px -4px 12px 0 #FFF,
      4px  4px 12px 0 rgba(0, 0, 0, 0.10);
   border: 0;
+}
+
+/* ============================================================
+   Mobile card scrollers: at narrow viewports, the multi-card grids
+   in Frame, Strategies, Execution Engine, and Transparency switch
+   from a stacked column to a horizontal scrolling row. Each card
+   takes ~82% width so the next one peeks at the edge, signalling
+   scrollability without needing visible scrollbars.
+   ============================================================ */
+@media (max-width: 720px) {
+  .frame-cards,
+  .strategy-grid,
+  .engine-grid,
+  .trans-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    grid-template-columns: none !important;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    /* Pull the scroller out past the container's horizontal padding so the
+       first card aligns flush with the section header text, while the row
+       can extend to the viewport's right edge. */
+    margin-left: calc(var(--pad-x) * -1);
+    margin-right: calc(var(--pad-x) * -1);
+    padding-left: var(--pad-x);
+    padding-right: var(--pad-x);
+    /* Vertical breathing room for neumorphic card shadows */
+    padding-top: 8px;
+    padding-bottom: 20px;
+    gap: 12px !important;
+    scroll-padding-left: var(--pad-x);
+  }
+  .frame-cards::-webkit-scrollbar,
+  .strategy-grid::-webkit-scrollbar,
+  .engine-grid::-webkit-scrollbar,
+  .trans-grid::-webkit-scrollbar { display: none; }
+  .frame-cards > *,
+  .strategy-grid > *,
+  .engine-grid > *,
+  .trans-grid > * {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+  /* Inline `height: 100%` on cards prevents flex stretch from equalising
+     heights when the container's height is auto. Force auto so all cards
+     stretch to the tallest sibling on mobile. */
+  .engine-grid .engine-pillar,
+  .trans-grid .card-neu,
+  .frame-cards .card-neu,
+  .strategy-grid .card-neu { height: auto !important; }
+
+  /* Top: hide the dark risk disclaimer banner on mobile. */
+  .risk-banner { display: none !important; }
+
+  /* Execution Engine: hide the diagram visual inside each pillar on mobile,
+     they distort at narrow widths. Keep the title + body copy. */
+  .engine-pillar-visual { display: none !important; }
+
+  /* Agent loops table: on mobile, simplify the header ("Agent loops" only)
+     and turn each row into a vertical-stack card that scrolls horizontally
+     instead of stacking down the page. */
+  .loops-head-detail { display: none; }
+  .loops-table {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding: 0 !important;
+  }
+  .loops-table::-webkit-scrollbar { display: none; }
+  .loops-row {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+    gap: 8px !important;
+    padding: 16px 18px !important;
+    border-bottom: none !important;
+    border-right: 1px solid rgba(255,255,255,0.06) !important;
+  }
+  .loops-row:last-child {
+    border-right: none !important;
+  }
+
+  /* Hero: hide the metrics card on mobile so the headline + CTAs read clean. */
+  .hero-metrics { display: none !important; }
+
+  /* Why Lucidly: turn the 2x2 hairline grid into a horizontal scroller where
+     each pillar becomes its own neumorphic card. */
+  .why-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    grid-template-columns: none !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    scroll-snap-type: x mandatory;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin-left: calc(var(--pad-x) * -1);
+    margin-right: calc(var(--pad-x) * -1);
+    padding-left: var(--pad-x);
+    padding-right: var(--pad-x);
+    padding-top: 8px;
+    padding-bottom: 20px;
+    gap: 12px !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-padding-left: var(--pad-x);
+  }
+  .why-grid::-webkit-scrollbar { display: none; }
+  .why-cell {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+    border-radius: 24px !important;
+    background: #F4F0FF !important;
+    box-shadow:
+      -4px -4px 4px 0 rgba(0, 0, 0, 0.08) inset,
+       4px  4px 4px 0 #FFF inset,
+      -4px -4px 12px 0 #FFF,
+       4px  4px 12px 0 rgba(0, 0, 0, 0.10) !important;
+    border-right: none !important;
+    border-bottom: none !important;
+  }
+
+  /* Risk section: keep only the principles sidebar on mobile; hide the
+     three numbered row blocks on the right. */
+  .risk-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .risk-grid > :nth-child(2) { display: none !important; }
+
+  /* Allocator CTA: keep only the form on mobile; drop the heading +
+     description + Response/Onboarding/Minimum stats. */
+  .cta-grid > div:first-child { display: none !important; }
 }

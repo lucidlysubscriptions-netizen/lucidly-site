@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 export type SyUsdApyStatus = 'loading' | 'ready' | 'error'
 
 export interface SyUsdApy {
-  /** Trailing 30d APY percentage (e.g. 3.31 for 3.31%). */
+  /** APY since inception, percentage (e.g. 6.11 for 6.11%). */
   value: number | null
   status: SyUsdApyStatus
 }
@@ -12,8 +12,8 @@ const VAULT_ADDRESS = '0x279CAD277447965AF3d24a78197aad1B02a2c589'
 const DURATION = 'inception'
 
 /**
- * Fetches the since-inception APY for the syUSD vault from the Lucidly API.
- * Single fetch on mount — Counter animates from 0 to the live value once
+ * Fetches the syUSD vault APY since inception from the Lucidly API.
+ * Single fetch on mount - Counter animates from 0 to the live value once
  * the response resolves.
  */
 export function useSyUsdApy(): SyUsdApy {

@@ -6,8 +6,6 @@ import { Frame } from './sections/Frame'
 import { Strategies } from './sections/Strategies'
 import { ExecutionEngine } from './sections/ExecutionEngine'
 import { Why } from './sections/Why'
-import { Transparency } from './sections/Transparency'
-import { BuiltFor } from './sections/BuiltFor'
 import { Risk } from './sections/Risk'
 import { Research } from './sections/Research'
 import { Backed } from './sections/Backed'
@@ -28,8 +26,6 @@ export function App() {
         <Strategies />
         <ExecutionEngine />
         <Why />
-        <Transparency />
-        <BuiltFor />
         <Risk />
         <Research />
         <Backed />

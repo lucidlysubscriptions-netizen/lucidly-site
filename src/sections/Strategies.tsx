@@ -3,6 +3,17 @@ import { Icon } from '../components/icons'
 import { Reveal, SectionHeader, Spark, StatusPill } from '../components/primitives'
 import { LUCIDLY_DATA } from '../data'
 import type { Strategy } from '../types'
+import { useVaultApys, type VaultApy, type VaultRequest } from '../hooks/useVaultApys'
+
+const APY_REQUESTS: VaultRequest[] = LUCIDLY_DATA.strategies
+  .filter((s): s is Strategy & { apy: NonNullable<Strategy['apy']> } => s.apy != null)
+  .map((s) => s.apy)
+
+function formatLiveApr(apyInfo: VaultApy | undefined): string {
+  if (!apyInfo || apyInfo.status !== 'ready' || apyInfo.value == null) return '__'
+  if (apyInfo.value < 0) return '__'
+  return `${apyInfo.value.toFixed(2)}%`
+}
 
 interface CardStatProps {
   label: string
@@ -32,12 +43,14 @@ function CardStat({ label, value }: CardStatProps) {
 interface StrategyCardProps {
   s: Strategy
   idx: number
+  liveApr?: string
 }
 
-function StrategyCard({ s, idx }: StrategyCardProps) {
+function StrategyCard({ s, idx, liveApr }: StrategyCardProps) {
+  const displayApr = liveApr ?? s.apr
   return (
     <a
-      href="https://app.lucidly.finance/"
+      href={s.href ?? 'https://app.lucidly.finance/'}
       target="_blank"
       rel="noopener noreferrer"
       className="card-neu"
@@ -101,7 +114,7 @@ function StrategyCard({ s, idx }: StrategyCardProps) {
       >
         <CardStat
           label="Net APR"
-          value={<span className="mono" style={{ fontSize: 15, color: 'var(--ink)', fontWeight: 500 }}>{s.apr}</span>}
+          value={<span className="mono" style={{ fontSize: 15, color: 'var(--ink)', fontWeight: 500 }}>{displayApr}</span>}
         />
         <CardStat label="Venue" value={<span style={{ fontSize: 13, color: 'var(--ink-2)' }}>{s.chain}</span>} />
         <CardStat
@@ -147,6 +160,7 @@ function StrategyCard({ s, idx }: StrategyCardProps) {
 
 /* 03 - Live strategies grid */
 export function Strategies() {
+  const apys = useVaultApys(APY_REQUESTS)
   return (
     <section id="strategies" style={{ paddingTop: 'var(--section-y)', paddingBottom: 'var(--section-y)' }}>
       <div className="container">
@@ -154,7 +168,6 @@ export function Strategies() {
           num="03"
           label="Live strategies"
           kicker="Tokenized · hedged · running in production"
-          title="A small set of underwriteable products."
           action={
             <a
               href="https://app.lucidly.finance/"
@@ -173,7 +186,11 @@ export function Strategies() {
         >
           {LUCIDLY_DATA.strategies.map((s, i) => (
             <Reveal key={s.token} delay={i * 70}>
-              <StrategyCard s={s} idx={i} />
+              <StrategyCard
+                s={s}
+                idx={i}
+                liveApr={s.apy ? formatLiveApr(apys[s.apy.vaultAddress]) : undefined}
+              />
             </Reveal>
           ))}
           <Reveal delay={LUCIDLY_DATA.strategies.length * 70}>

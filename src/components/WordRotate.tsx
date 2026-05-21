@@ -10,16 +10,15 @@ interface WordRotateProps {
 
 /**
  * Adapted from Magic UI's WordRotate (https://magicui.design/) for inline
- * use inside a heading. Each word slides in from above and exits below,
- * clipped by the parent so the motion reads as a slot-machine. The
- * container's width transitions to the active word's measured width so
- * trailing text smoothly slides with it.
+ * use inside a heading. The active word cross-fades to the next - opacity
+ * only, no vertical motion, so descenders stay put. The container's width
+ * is pinned to the widest word so trailing text never reflows.
  */
 const DEFAULT_MOTION_PROPS: HTMLMotionProps<'span'> = {
-  initial: { y: '-100%' },
-  animate: { y: 0 },
-  exit: { y: '100%' },
-  transition: { duration: 0.3, ease: 'easeOut' },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.25, ease: 'easeInOut' },
 }
 
 export function WordRotate({
@@ -52,7 +51,7 @@ export function WordRotate({
     return () => window.clearInterval(id)
   }, [words, duration])
 
-  const width = widths[index]
+  const width = widths.length ? Math.max(...widths) : undefined
 
   return (
     <span

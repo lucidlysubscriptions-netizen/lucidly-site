@@ -10,6 +10,7 @@ export function RiskBanner({ onDismiss, dismissed }: RiskBannerProps) {
   if (dismissed) return null
   return (
     <div
+      className="risk-banner"
       style={{
         background: 'var(--bg-ink)',
         color: '#D9D6E8',
@@ -32,7 +33,12 @@ export function RiskBanner({ onDismiss, dismissed }: RiskBannerProps) {
             Lucidly operates engineered strategies in volatile, decentralized digital-asset markets. Past
             performance does not indicate future results. All capital is at risk. Each strategy carries
             documented drawdown scenarios -{' '}
-            <a href="#" style={{ color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.3)' }}>
+            <a
+              href="https://app.lucidly.finance/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.3)' }}
+            >
               read them before allocating
             </a>
             .
