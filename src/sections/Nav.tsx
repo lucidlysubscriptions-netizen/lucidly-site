@@ -90,7 +90,9 @@ export function Nav() {
           </nav>
 
           <a
-            href="#allocate"
+            href="https://app.lucidly.finance/"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: 'inline-flex',
               alignItems: 'center',

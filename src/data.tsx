@@ -253,7 +253,7 @@ export const LUCIDLY_DATA: LucidlyData = {
 
   navLinks: [
     { label: 'Strategies', href: '#strategies' },
-    { label: 'Execution', href: '#engine' },
+    { label: 'Execution', href: '#allocate' },
     { label: 'Research', href: 'https://research.lucidly.finance/', external: true },
     { label: 'Docs', href: 'https://docs.lucidly.finance/', external: true },
     { label: 'Blogs', href: 'https://www.lucidly.finance/blog', external: true },
