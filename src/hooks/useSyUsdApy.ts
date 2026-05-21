@@ -9,10 +9,10 @@ export interface SyUsdApy {
 }
 
 const VAULT_ADDRESS = '0x279CAD277447965AF3d24a78197aad1B02a2c589'
-const DURATION = '30d'
+const DURATION = 'inception'
 
 /**
- * Fetches the trailing 30d APY for the syUSD vault from the Lucidly API.
+ * Fetches the since-inception APY for the syUSD vault from the Lucidly API.
  * Single fetch on mount — Counter animates from 0 to the live value once
  * the response resolves.
  */

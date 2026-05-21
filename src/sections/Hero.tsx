@@ -93,7 +93,7 @@ export function Hero() {
                 )
               }
               label="syUSD net APR"
-              sub="trailing 30d · syUSD vault"
+              sub="since inception · syUSD vault"
             />
             <Metric
               value={
